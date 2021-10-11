@@ -5,6 +5,7 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.HttpLogging;
 using Rapture.Services.VersionCheck.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +38,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+});
+
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.ResponseHeaders.Add("Content-Location");
+    logging.ResponseHeaders.Add("X-Repository");
+    logging.ResponseHeaders.Add("X-Patch-Module");
+    logging.ResponseHeaders.Add("X-Protocol");
+    logging.ResponseHeaders.Add("X-Latest-Version");
 });
 
 builder.Services.AddSingleton<VersionRepository>();
