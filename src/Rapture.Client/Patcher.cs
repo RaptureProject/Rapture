@@ -34,9 +34,9 @@ internal class Patcher
         new()
         {
             FileHash = "6A18533D4C3B296CCDEDD84C81A3EB99AE5DDB47C3416DE60E3414983783EFEF",
-            ResultHash = "E0531FA034B2A38138930131184C80C6CC57618468AE40E258C73223F54948F1",
-            PatchOffset = 0x646EF,
-            PatchData = new byte[] { 0x19 }
+            ResultHash = "B91A259A435FD7B0EFE844D08B7F42141135C39FAEE66CEBA84B8F083651CA13",
+            PatchOffset = 0x64324,
+            PatchData = new byte[] { 0x01 }
         }
     };
 
