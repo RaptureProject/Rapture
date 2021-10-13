@@ -6,12 +6,12 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
-namespace Rapture.Client;
+namespace Rapture.Client.Utilities;
 
 /// <summary>
 /// General utilities
 /// </summary>
-internal class Utilities
+internal class Utility
 {
     /// <summary>
     /// Allocates a console window

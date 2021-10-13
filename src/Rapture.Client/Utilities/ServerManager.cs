@@ -5,7 +5,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Rapture.Client;
+namespace Rapture.Client.Utilities;
 
 /// <summary>
 /// The server manager
@@ -111,7 +111,7 @@ internal class ServerManager
 
             if (hosts.EndsWith(Environment.NewLine + Environment.NewLine))
             {
-                hosts = hosts.Substring(0, hosts.Length - Environment.NewLine.Length);
+                hosts = hosts[..^Environment.NewLine.Length];
             }
 
             File.WriteAllText(HostsPath, hosts);

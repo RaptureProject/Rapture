@@ -3,6 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Text.RegularExpressions;
+using Rapture.Client.Dialogs;
+using Rapture.Client.Patching;
+using Rapture.Client.Utilities;
 
 namespace Rapture.Client;
 
@@ -22,7 +25,7 @@ class Program
     /// <param name="args">The command line arguments</param>
     public static void Main(string[] args)
     {
-        var isAdmin = Utilities.IsAdministrator();
+        var isAdmin = Utility.IsAdministrator();
 
         if ((args.Length == 2 && args[0] != "elevate") || (isAdmin && args.Length > 1) || args.Length > 2)
         {
@@ -32,7 +35,7 @@ class Program
 
         if (!isAdmin)
         {
-            Utilities.ElevatePrivileges(args);
+            Utility.ElevatePrivileges(args);
             return;
         }
 
@@ -88,7 +91,7 @@ class Program
             if (File.Exists(args[0]))
             {
                 var execute = Patcher.PatchFile(args[0]);
-                Utilities.StartDebugProcess(execute);
+                Utility.StartDebugProcess(execute);
             }
             else
             {

@@ -2,7 +2,9 @@
 // The Rapture Contributors licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Rapture.Client;
+using Rapture.Client.Utilities;
+
+namespace Rapture.Client.Dialogs;
 
 /// <summary>
 /// Dialog utilities
@@ -90,7 +92,7 @@ internal class Dialog
     {
         if (!s_consoleAllocated)
         {
-            Utilities.AllocConsole();
+            Utility.AllocConsole();
             Console.Title = "Rapture Client";
             s_consoleAllocated = true;
         }

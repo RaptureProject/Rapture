@@ -4,7 +4,7 @@
 
 using Microsoft.Win32;
 
-namespace Rapture.Client;
+namespace Rapture.Client.Utilities;
 
 /// <summary>
 /// The installer

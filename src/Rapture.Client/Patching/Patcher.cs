@@ -4,7 +4,7 @@
 
 using System.Security.Cryptography;
 
-namespace Rapture.Client;
+namespace Rapture.Client.Patching;
 
 /// <summary>
 /// The patcher
