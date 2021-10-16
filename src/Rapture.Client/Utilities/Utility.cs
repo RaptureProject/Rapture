@@ -49,21 +49,27 @@ internal class Utility
 
                 Process.Start(startInfo);
             }
-            else if (args.Length == 1)
+            else if (args.Length >= 1)
             {
-                Process.Start(Environment.ProcessPath, $"elevate \"{args[0]}\"");
-            }
-            else if (args.Length == 2 && args[0] == "elevate")
-            {
-                var startInfo = new ProcessStartInfo()
+                if (args[0] == "elevate")
                 {
-                    FileName = Environment.ProcessPath,
-                    Arguments = $"\"{args[1]}\"",
-                    UseShellExecute = true,
-                    Verb = "runas"
-                };
+                    var arguments = string.Join(' ', args[1..].Select(a => $"\"{a}\""));
 
-                Process.Start(startInfo);
+                    var startInfo = new ProcessStartInfo()
+                    {
+                        FileName = Environment.ProcessPath,
+                        Arguments = arguments,
+                        UseShellExecute = true,
+                        Verb = "runas"
+                    };
+
+                    Process.Start(startInfo);
+                }
+                else
+                {
+                    var arguments = string.Join(' ', args[0..].Select(a => $"\"{a}\""));
+                    Process.Start(Environment.ProcessPath, $"elevate {arguments}");
+                }
             }
         }
     }
@@ -72,7 +78,14 @@ internal class Utility
     /// Starts a debug process
     /// </summary>
     /// <param name="executablePath">The executable path</param>
-    public static void StartDebugProcess(string executablePath)
+    public static void StartDebugProcess(string executablePath) => StartDebugProcess(executablePath, new string[] { "" });
+
+    /// <summary>
+    /// Starts a debug process
+    /// </summary>
+    /// <param name="executablePath">The executable path</param>
+    /// <param name="args">The command line arguments</param>
+    public static void StartDebugProcess(string executablePath, string[] args)
     {
         if (Environment.ProcessorCount > 14)
         {
@@ -81,10 +94,15 @@ internal class Utility
 
         unsafe
         {
-            var startupInfo = new Windows.Win32.System.Threading.STARTUPINFOW();
-            var creationFlags = Windows.Win32.System.Threading.PROCESS_CREATION_FLAGS.DEBUG_ONLY_THIS_PROCESS;
-            Windows.Win32.PInvoke.CreateProcess(executablePath, null, null, null, false, creationFlags, null, null, startupInfo, out var pi);
-            Windows.Win32.PInvoke.DebugActiveProcessStop(pi.dwProcessId);
+            var fullCommand = $"\"{executablePath}\" {string.Join(' ', args.Select(a => $"\"{a}\""))}";
+
+            fixed (char* commandLine = fullCommand)
+            {
+                var startupInfo = new Windows.Win32.System.Threading.STARTUPINFOW();
+                var creationFlags = Windows.Win32.System.Threading.PROCESS_CREATION_FLAGS.DEBUG_ONLY_THIS_PROCESS;
+                Windows.Win32.PInvoke.CreateProcess(executablePath, commandLine, null, null, false, creationFlags, null, null, startupInfo, out var pi);
+                Windows.Win32.PInvoke.DebugActiveProcessStop(pi.dwProcessId);
+            }
         }
     }
 }

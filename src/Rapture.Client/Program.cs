@@ -25,15 +25,7 @@ class Program
     /// <param name="args">The command line arguments</param>
     public static void Main(string[] args)
     {
-        var isAdmin = Utility.IsAdministrator();
-
-        if ((args.Length == 2 && args[0] != "elevate") || (isAdmin && args.Length > 1) || args.Length > 2)
-        {
-            Dialog.Message("Arguments provided are not valid!");
-            return;
-        }
-
-        if (!isAdmin)
+        if (!Utility.IsAdministrator())
         {
             Utility.ElevatePrivileges(args);
             return;
@@ -86,12 +78,20 @@ class Program
                 Dialog.Message("Server address succesfully set!");
             }
         }
-        else if (args.Length == 1)
+        else if (args.Length >= 1)
         {
             if (File.Exists(args[0]))
             {
                 var execute = Patcher.PatchFile(args[0]);
-                Utility.StartDebugProcess(execute);
+
+                if (args.Length > 1)
+                {
+                    Utility.StartDebugProcess(execute, args[1..]);
+                }
+                else
+                {
+                    Utility.StartDebugProcess(execute);
+                }
             }
             else
             {
