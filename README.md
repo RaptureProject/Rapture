@@ -3,4 +3,4 @@
 [![GitHub issues](https://img.shields.io/github/issues/AndrewBabbitt97/Rapture?style=for-the-badge)](https://github.com/AndrewBabbitt97/Rapture/issues)
 
 # Rapture
-This repository contains the source code for Rapture.
+Rapture is a private server emulator for Final Fantasy XIV 1.0, it is entirely built as microservices and meant to be deployed on top of Kubernetes.
